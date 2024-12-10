@@ -1,4 +1,4 @@
-import { CFP_ALLOWED_PATHS } from './constants';
+import { CFP_DISALLOWED_PATHS } from './constants'; // Change to disallowed paths
 import { getCookieKeyValue } from './utils';
 import { getTemplate } from './template';
 
@@ -14,15 +14,15 @@ export async function onRequest(context: {
   const cookieKeyValue = await getCookieKeyValue(env.CFP_PASSWORD);
 
   if (
-    cookie.includes(cookieKeyValue) ||
-    CFP_ALLOWED_PATHS.includes(pathname) ||
+    cookie.includes(cookieKeyValue) || 
+    (!CFP_DISALLOWED_PATHS.includes(pathname) && env.CFP_PASSWORD) || 
     !env.CFP_PASSWORD
   ) {
-    // Correct hash in cookie, allowed path, or no password set.
+    // Correct hash in cookie, not in disallowed paths, or no password set.
     // Continue to next middleware.
     return await next();
   } else {
-    // No cookie or incorrect hash in cookie. Redirect to login.
+    // No cookie or incorrect hash in cookie, and path requires password.
     return new Response(getTemplate({ redirectPath: pathname, withError: error === '1' }), {
       headers: {
         'content-type': 'text/html',
