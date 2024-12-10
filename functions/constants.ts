@@ -8,9 +8,3 @@ export const CFP_COOKIE_KEY = 'CFP-Auth-Key';
  * Default: 1 week.
  */
 export const CFP_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
-
-/**
- * Paths that don't require authentication.
- * The /cfp_login path must be included.
- */
-export const CFP_DISALLOWED_PATHS = ['/about'];
