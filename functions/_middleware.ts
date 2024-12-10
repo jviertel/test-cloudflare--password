@@ -15,7 +15,7 @@ export async function onRequest(context: {
 
   if (
     cookie.includes(cookieKeyValue) || 
-    (!CFP_DISALLOWED_PATHS.includes(pathname) && env.CFP_PASSWORD) || 
+    (!CFP_DISALLOWED_PATHS.includes(pathname)) || 
     !env.CFP_PASSWORD
   ) {
     // Correct hash in cookie, not in disallowed paths, or no password set.
