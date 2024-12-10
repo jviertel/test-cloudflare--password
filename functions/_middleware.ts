@@ -20,6 +20,7 @@ export async function onRequest(context: {
   ) {
     // Correct hash in cookie, not in disallowed paths, or no password set.
     // Continue to next middleware.
+    console.log(pathname);
     return await next();
   } else {
     // No cookie or incorrect hash in cookie, and path requires password.
