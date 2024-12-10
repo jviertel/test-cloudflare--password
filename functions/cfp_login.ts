@@ -6,11 +6,16 @@ export async function onRequestPost(context: { request: Request; env: { CFP_PASS
   const body = await request.formData();
   const { password, redirect } = Object.fromEntries(body);
   const hashedPassword = await sha256(password.toString());
+
+  if (!env.CFP_PASSWORD) {
+    // Handle the case where CFP_PASSWORD is undefined
+    return new Response('Password not set in environment', { status: 500 });
+  }
+
   const hashedCfpPassword = await sha256(env.CFP_PASSWORD);
   const redirectPath = redirect.toString() || '/';
 
   if (hashedPassword === hashedCfpPassword) {
-    // Valid password: set cookie and redirect to original page
     const cookieKeyValue = await getCookieKeyValue(env.CFP_PASSWORD);
 
     return new Response('', {
@@ -22,7 +27,6 @@ export async function onRequestPost(context: { request: Request; env: { CFP_PASS
       }
     });
   } else {
-    // Invalid password: redirect with error
     return new Response('', {
       status: 302,
       headers: {
