@@ -1,4 +1,4 @@
-function getTemplate({ redirectPath, withError }): string {
+export function getTemplate({ redirectPath, withError }: { redirectPath: string; withError: boolean; }): string {
   return `<!doctype html>
   <html lang="en" data-theme="dark">
     <head>
